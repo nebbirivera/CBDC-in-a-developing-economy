@@ -9,4 +9,4 @@ Stochastic General Equilibrium Analysis*".
 The file `main.m` runs the subroutines that generate the plot ans results shown
 in the paper.
 
-The entirety of the code was written by the authors.
+The entirety of the code and the document was written by the authors.
