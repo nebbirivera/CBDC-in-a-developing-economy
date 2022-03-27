@@ -1,3 +1,17 @@
+% Copyright (C) 2021-22 Pablo Nebbi Rivera Moreno and Karol Lorena Triana Montaño
+%
+% This is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% It is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% For a copy of the GNU General Public License, see <http://www.gnu.org/licenses/>.
+
 function [c_0 k_0 m_dc_0] = cbdc_price_rule_initial_guess(fixed, point)
 
 	A = fixed(1);
