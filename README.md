@@ -1,6 +1,6 @@
 # Central Bank Digital Currency in a Developing Economy
 
-*Pablo Nebbi Rivera Moreno and Karol Lorena Triana Montaño*
+Authors: *Pablo Nebbi Rivera Moreno and Karol Lorena Triana Montaño*
 
 This repository contains the document and supporting code used for the research
 paper named "*Central Bank Digital Currency in a Developing Economy: A Dynamic 
