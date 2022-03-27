@@ -1,3 +1,8 @@
+% This script runs the subroutines that generate the results and plots shown in
+% the document.
+% The .m files were run in MATLAB R2021b, and .mod files were run using Dynare
+% 4.6.4
+
 clear;close;clc;
 tic
 
