@@ -74,12 +74,11 @@ x_i_spread x_m_dc_to_gdp
 business_cycle_analysis
 %% Compute cbdc quant. Rule steady state and store it for computation 
 %% efficiency
-% dynare('cbdc_quant_rule.mod')
-% cbdc_ss_ig = oo_.dr.ys
-% save cbdc_qr_ss_initial_guess.mat cbdc_ss_ig
+dynare('cbdc_quant_rule.mod')
+cbdc_ss_ig = oo_.dr.ys;
+save cbdc_qr_ss_initial_guess.mat cbdc_ss_ig
 
 %%%% Sacrifice ratios analysis
 sacrifice_ratios
-% dynare cbdc_price_rule
 
 toc

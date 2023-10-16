@@ -14,12 +14,12 @@
 
 
 clear;% close;
-% dynare('nocbdc.mod','nowarn')
-% nocbdc_oo = oo_;
-% dynare('cbdc_price_rule.mod','nowarn')
-% cbdc_price_rule_oo = oo_;
-% dynare('cbdc_quant_rule.mod','nowarn')
-% cbdc_quant_rule_oo = oo_;
+dynare('nocbdc.mod','nowarn')
+nocbdc_oo = oo_;
+dynare('cbdc_price_rule.mod','nowarn')
+cbdc_price_rule_oo = oo_;
+dynare('cbdc_quant_rule.mod','nowarn')
+cbdc_quant_rule_oo = oo_;
 
 %% Set plot parameters
 n_sr = 4; % Cumulative periods to calculate the sacrifice ratio
@@ -36,7 +36,7 @@ unemp_rate_cumul = cumsum(nocbdc_oo.irfs.unemp_rate_t_e_i_t);
 pi_cumul = cumsum(nocbdc_oo.irfs.pi_t_e_i_t);
 nocbdc_sacrifice_ratio = gdp_cumul(n_sr)/pi_cumul(n_sr)
 
-load results_sacrifice_ratios.mat
+% load results_sacrifice_ratios.mat
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Compute the sacrifice ratio for different T and i_spread CBDC price rule
@@ -44,22 +44,22 @@ load results_sacrifice_ratios.mat
 dynare('cbdc_price_rule.mod','nowarn')
 n_points = 10;
 prop_factor = 100;
-% spreads = linspace(0.008,0.0176,n_points);
-% cbdc_pr_sacrifice_ratio_i_sp = NaN(1,n_points);
-% % Loop through i_spread values CBDC-pr
-% for k=1:n_points
-% 	set_param_value("i_spread",spreads(k));
-% 	[info, oo_, options_] = stoch_simul(M_, options_, oo_, var_list_);
-% 	i_spread
-% 	if info==0
-% 		gdp_cumul_cbdc_pr = cumsum(oo_.irfs.gdp_t_e_i_t);
-% 		pi_cumul_cbdc_pr = cumsum(oo_.irfs.pi_t_e_i_t);
-% 		cbdc_pr_sacrifice_ratio_i_sp(k) = gdp_cumul_cbdc_pr(n_sr)/...
-% 		pi_cumul_cbdc_pr(n_sr);
-% 	else
-% 		get_error_message(info)
-% 	end
-% end
+spreads = linspace(0.008,0.0176,n_points);
+cbdc_pr_sacrifice_ratio_i_sp = NaN(1,n_points);
+% Loop through i_spread values CBDC-pr
+for k=1:n_points
+	set_param_value("i_spread",spreads(k));
+	[info, oo_, options_] = stoch_simul(M_, options_, oo_, var_list_);
+	i_spread
+	if info==0
+		gdp_cumul_cbdc_pr = cumsum(oo_.irfs.gdp_t_e_i_t);
+		pi_cumul_cbdc_pr = cumsum(oo_.irfs.pi_t_e_i_t);
+		cbdc_pr_sacrifice_ratio_i_sp(k) = gdp_cumul_cbdc_pr(n_sr)/...
+		pi_cumul_cbdc_pr(n_sr);
+	else
+		get_error_message(info)
+	end
+end
 
 % Plot GDP sacrifice ratio vs. i_spread values
 figure;
@@ -78,21 +78,21 @@ legend boxon box on;grid on;
 
 
 %% Loop through T values CBDC-pr
-% Ts = linspace(1,2,n_points);
-% cbdc_pr_sacrifice_ratio_T = NaN(1,n_points);
-% for k=1:n_points
-% 	set_param_value("T",Ts(k));
-% 	[info, oo_, options_] = stoch_simul(M_, options_, oo_, var_list_);
-% 	i_spread
-% 	if info==0
-% 		gdp_cumul_cbdc_pr = cumsum(oo_.irfs.gdp_t_e_i_t);
-% 		pi_cumul_cbdc_pr = cumsum(oo_.irfs.pi_t_e_i_t);
-% 		cbdc_pr_sacrifice_ratio_T(k) = gdp_cumul_cbdc_pr(n_sr)/...
-% 		pi_cumul_cbdc_pr(n_sr);
-% 	else
-% 		get_error_message(info)
-% 	end
-% end
+Ts = linspace(1,2,n_points);
+cbdc_pr_sacrifice_ratio_T = NaN(1,n_points);
+for k=1:n_points
+	set_param_value("T",Ts(k));
+	[info, oo_, options_] = stoch_simul(M_, options_, oo_, var_list_);
+	i_spread
+	if info==0
+		gdp_cumul_cbdc_pr = cumsum(oo_.irfs.gdp_t_e_i_t);
+		pi_cumul_cbdc_pr = cumsum(oo_.irfs.pi_t_e_i_t);
+		cbdc_pr_sacrifice_ratio_T(k) = gdp_cumul_cbdc_pr(n_sr)/...
+		pi_cumul_cbdc_pr(n_sr);
+	else
+		get_error_message(info)
+	end
+end
 
 subplot(1,2,2);
 plot(Ts,cbdc_pr_sacrifice_ratio_T,"blue","LineWidth",plot_line_width);
@@ -110,25 +110,25 @@ set(gcf,"PaperPosition",[0 0 10 3.8]);
 % saveas(gcf,strcat("price_rule_sr_i_sp_and_T",".eps"),"epsc");
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Compute the sacrifice ratio for different spreads CBDC quant. rule
+%% Compute the sacrifice ratio for different spreads CBDC quant. rule
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% dynare('cbdc_quant_rule.mod','nowarn')
-% cbdc_to_gdp_ratios = linspace(0.01,0.3,n_points_qr);
-% cbdc_qr_sacrifice_ratio_T = NaN(1,n_points_qr);
-% % Loop through m_dc_to_gdp values CBDC-qr
-% for k=1:n_points_qr
-% 	set_param_value("m_dc_to_gdp",cbdc_to_gdp_ratios(k));
-% 	[info, oo_, options_] = stoch_simul(M_, options_, oo_, var_list_);
-% 	cbdc_to_gdp_ratios(k)
-% 	if info==0
-% 		gdp_cumul_cbdc_pr = cumsum(oo_.irfs.gdp_t_e_g_t);
-% 		pi_cumul_cbdc_pr = cumsum(oo_.irfs.pi_t_e_g_t);
-% 		cbdc_qr_sacrifice_ratio_T(k) = gdp_cumul_cbdc_pr(n_sr)/...
-% 		pi_cumul_cbdc_pr(n_sr);
-% 	else
-% 		get_error_message(info)
-% 	end
-% end
+dynare('cbdc_quant_rule.mod','nowarn')
+cbdc_to_gdp_ratios = linspace(0.01,0.3,n_points_qr);
+cbdc_qr_sacrifice_ratio_T = NaN(1,n_points_qr);
+% Loop through m_dc_to_gdp values CBDC-qr
+for k=1:n_points_qr
+	set_param_value("m_dc_to_gdp",cbdc_to_gdp_ratios(k));
+	[info, oo_, options_] = stoch_simul(M_, options_, oo_, var_list_);
+	cbdc_to_gdp_ratios(k)
+	if info==0
+		gdp_cumul_cbdc_pr = cumsum(oo_.irfs.gdp_t_e_g_t);
+		pi_cumul_cbdc_pr = cumsum(oo_.irfs.pi_t_e_g_t);
+		cbdc_qr_sacrifice_ratio_T(k) = gdp_cumul_cbdc_pr(n_sr)/...
+		pi_cumul_cbdc_pr(n_sr);
+	else
+		get_error_message(info)
+	end
+end
 figure;
 % subplot(1,1,3);
 plot(cbdc_to_gdp_ratios,cbdc_qr_sacrifice_ratio_T,"blue","LineWidth",plot_line_width);

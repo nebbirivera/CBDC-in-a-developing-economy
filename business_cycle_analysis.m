@@ -38,15 +38,15 @@ x_label_font_size = 9;
 y_label_font_size = 9;
 
 %% Run the three model variants and get irfs
-% dynare('nocbdc.mod','nowarn')
-% nocbdc_oo = oo_;
-% dynare('cbdc_price_rule.mod','nowarn')
-% cbdc_price_rule_oo = oo_;
-% dynare('cbdc_quant_rule.mod','nowarn')
-% cbdc_quant_rule_oo = oo_;
+dynare('nocbdc.mod','nowarn')
+nocbdc_oo = oo_;
+dynare('cbdc_price_rule.mod','nowarn')
+cbdc_price_rule_oo = oo_;
+dynare('cbdc_quant_rule.mod','nowarn')
+cbdc_quant_rule_oo = oo_;
 %% Save the results for avoiding re-running the models when testing
-% save baseline_irfs_results.mat nocbdc_oo cbdc_price_rule_oo cbdc_quant_rule_oo
-load baseline_irfs_results.mat
+save baseline_irfs_results.mat nocbdc_oo cbdc_price_rule_oo cbdc_quant_rule_oo
+% load baseline_irfs_results.mat
 
 variable_names_main={"gdp_t","pi_t","c_t","Inv_t","i_t","unemp_rate_t",...
 "infor_rate_t","match_t","LGF_t","tc_avg_t","r_t","lab_force_part_rate_t"};
@@ -62,110 +62,110 @@ variable_names_main_titles={"\textbf{GDP}","\textbf{Inflation}",...
 %%%% IRFs of main variables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % close all;
-% shock_names = {"_e_a_t","_e_i_t","_e_a_F_t","_e_g_t"};
+shock_names = {"_e_a_t","_e_i_t","_e_a_F_t","_e_g_t"};
 
-% for s=1:length(shock_names)
-% 	figure;
-% 	for k=1:length(variable_names_main)
-% 		subplot(3,4,k);
-% 		yline(0,":k","LineWidth",zero_line_width);
-% 		hold on;
-% 		% No-CBDC IRFs
-% 		plot(1:20,prop_factor*nocbdc_oo.irfs.(...
-% 			strcat(char(variable_names_main{k}),...
-% 			char(shock_names{s}))),...
-% 			nocbdc_irf_ls,"LineWidth",irf_line_width,"Color",nocbdc_irf_color);
-% 		xlim([1 20]);
-% 		hold on;
-% 		% Price rule IRFs
-% 		plot(1:20,prop_factor*cbdc_price_rule_oo.irfs.(strcat(...
-% 			char(variable_names_main{k}),char(shock_names{s}))),...
-% 			cbdc_irf_pr_ls,"LineWidth",irf_line_width,"Color",...
-% 			cbdc_irf_pr_color);
-% 		xlim([1 20]);
-% 		hold on;
-% 		% Quant. rule IRFs
-% 		plot(1:20,prop_factor*cbdc_quant_rule_oo.irfs.(strcat(...
-% 			char(variable_names_main{k}),char(shock_names{s}))),...
-% 			cbdc_irf_qr_ls,"LineWidth",irf_line_width,"Color",...
-% 			cbdc_irf_qr_color);
-% 		xlim([1 20]);
-% 		% Figure titles
-% 		title(variable_names_main_titles(k)," ","Interpreter","latex",...
-% 			"fontsize",title_font_size);%,'Position');, [0],...
-% 			% "Units","normalized");
-% 		xlabel(x_label,"FontSize",x_label_font_size);
-% 		ylabel(y_label,"FontSize",y_label_font_size);
-% 		grid on;box on;hold off;
-% 	end
-% 	legen{1,1}="";legen{1,2}="No CBDC";legen{1,3}="CBDC - Price rule";
-% 	legen{1,4}="CBDC - Quant. rule";
-% 	lege=legend(legen,'Orientation','horizontal',...
-% 		'Position',[0.5 0.04 0 0],'FontSize',10);
-% 	set(lege,'Box','on');
-% 	set(gcf,"PaperPosition",[0 0 10.5 7.75]);
-% 	% saveas(gcf,strcat("irfs",shock_names{s},".eps"),"epsc");
-% end
+for s=1:length(shock_names)
+	figure;
+	for k=1:length(variable_names_main)
+		subplot(3,4,k);
+		yline(0,":k","LineWidth",zero_line_width);
+		hold on;
+		% No-CBDC IRFs
+		plot(1:20,prop_factor*nocbdc_oo.irfs.(...
+			strcat(char(variable_names_main{k}),...
+			char(shock_names{s}))),...
+			nocbdc_irf_ls,"LineWidth",irf_line_width,"Color",nocbdc_irf_color);
+		xlim([1 20]);
+		hold on;
+		% Price rule IRFs
+		plot(1:20,prop_factor*cbdc_price_rule_oo.irfs.(strcat(...
+			char(variable_names_main{k}),char(shock_names{s}))),...
+			cbdc_irf_pr_ls,"LineWidth",irf_line_width,"Color",...
+			cbdc_irf_pr_color);
+		xlim([1 20]);
+		hold on;
+		% Quant. rule IRFs
+		plot(1:20,prop_factor*cbdc_quant_rule_oo.irfs.(strcat(...
+			char(variable_names_main{k}),char(shock_names{s}))),...
+			cbdc_irf_qr_ls,"LineWidth",irf_line_width,"Color",...
+			cbdc_irf_qr_color);
+		xlim([1 20]);
+		% Figure titles
+		title(variable_names_main_titles(k)," ","Interpreter","latex",...
+			"fontsize",title_font_size);%,'Position');, [0],...
+			% "Units","normalized");
+		xlabel(x_label,"FontSize",x_label_font_size);
+		ylabel(y_label,"FontSize",y_label_font_size);
+		grid on;box on;hold off;
+	end
+	legen{1,1}="";legen{1,2}="No CBDC";legen{1,3}="CBDC - Price rule";
+	legen{1,4}="CBDC - Quant. rule";
+	lege=legend(legen,'Orientation','horizontal',...
+		'Position',[0.5 0.04 0 0],'FontSize',10);
+	set(lege,'Box','on');
+	set(gcf,"PaperPosition",[0 0 10.5 7.75]);
+	% saveas(gcf,strcat("irfs",shock_names{s},".eps"),"epsc");
+end
 % % close all;
 
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% %%%% IRFs of other variables
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% variable_names_2nd={"m_c_t","m_dc_t","w_I_t","w_F_t","w_avg_t","V_I_h_t",...
-% "V_F_h_t","V_I_f_t","V_F_f_t","i_dc_t","mc_t","vac_t"};
-% variable_names_2nd_titles={"\textbf{Cash}","\textbf{CBDC}",...
-% "\textbf{Informal wage}","\textbf{Formal wage}","\textbf{Average wage}",...
-% "\textbf{V. acc. Inf. HH.}","\textbf{V. acc. For. HH.}",...
-% "\textbf{V. acc. Inf. firm}","\textbf{V. acc. For. firm}",...
-% "\textbf{CBDC interest}","\textbf{Real marginal cost}",...
-% "\textbf{Aggregate vacancies}"};
-% shock_names = {"_e_a_t","_e_i_t","_e_a_F_t","_e_g_t"};
-% for s=1:length(shock_names)
-% 	figure;
-% 	for k=1:length(variable_names_2nd)
-% 		subplot(3,4,k);
-% 		yline(0,":k","LineWidth",zero_line_width);
-% 		hold on;
-% 		% No-CBDC IRFs
-% 		if variable_names_2nd{k}~="m_dc_t" && variable_names_2nd{k}~="i_dc_t"
-% 			plot(1:20,prop_factor*nocbdc_oo.irfs.(...
-% 				strcat(char(variable_names_2nd{k}),...
-% 				char(shock_names{s}))),...
-% 				nocbdc_irf_ls,"LineWidth",irf_line_width,"Color",nocbdc_irf_color);
-% 			xlim([1 20]);
-% 			hold on;
-% 		end
-% 		% Price rule IRFs
-% 		plot(1:20,prop_factor*cbdc_price_rule_oo.irfs.(strcat(...
-% 			char(variable_names_2nd{k}),char(shock_names{s}))),...
-% 			cbdc_irf_pr_ls,"LineWidth",irf_line_width,"Color",...
-% 			cbdc_irf_pr_color);
-% 		xlim([1 20]);
-% 		hold on;
-% 		% Quant. rule IRFs
-% 		plot(1:20,prop_factor*cbdc_quant_rule_oo.irfs.(strcat(...
-% 			char(variable_names_2nd{k}),char(shock_names{s}))),...
-% 			cbdc_irf_qr_ls,"LineWidth",irf_line_width,"Color",...
-% 			cbdc_irf_qr_color);
-% 		xlim([1 20]);
-% 		% Figure titles
-% 		title(variable_names_2nd_titles(k)," ","Interpreter","latex",...
-% 			"fontsize",title_font_size);%,'Position');, [0],...
-% 			% "Units","normalized");
-% 		xlabel(x_label,"FontSize",x_label_font_size);
-% 		ylabel(y_label,"FontSize",y_label_font_size);
-% 		grid on;box on;hold off;
-% 	end
-% 	legen{1,1}="";legen{1,2}="No CBDC";legen{1,3}="CBDC - Price rule";
-% 	legen{1,4}="CBDC - Quant. rule";
-% 	lege=legend(legen,'Orientation','horizontal',...
-% 		'Position',[0.5 0.05 0 0],'FontSize',10);
-% 	set(lege,'Box','on');
-% 	set(gcf,"PaperPosition",[0 0 10.5 7.75]);
-% 	saveas(gcf,strcat("irfs",shock_names{s},"_remain",".eps"),"epsc")
-% end
-close all;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% IRFs of other variables
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+variable_names_2nd={"m_c_t","m_dc_t","w_I_t","w_F_t","w_avg_t","V_I_h_t",...
+"V_F_h_t","V_I_f_t","V_F_f_t","i_dc_t","mc_t","vac_t"};
+variable_names_2nd_titles={"\textbf{Cash}","\textbf{CBDC}",...
+"\textbf{Informal wage}","\textbf{Formal wage}","\textbf{Average wage}",...
+"\textbf{V. acc. Inf. HH.}","\textbf{V. acc. For. HH.}",...
+"\textbf{V. acc. Inf. firm}","\textbf{V. acc. For. firm}",...
+"\textbf{CBDC interest}","\textbf{Real marginal cost}",...
+"\textbf{Aggregate vacancies}"};
+shock_names = {"_e_a_t","_e_i_t","_e_a_F_t","_e_g_t"};
+for s=1:length(shock_names)
+	figure;
+	for k=1:length(variable_names_2nd)
+		subplot(3,4,k);
+		yline(0,":k","LineWidth",zero_line_width);
+		hold on;
+		% No-CBDC IRFs
+		if variable_names_2nd{k}~="m_dc_t" && variable_names_2nd{k}~="i_dc_t"
+			plot(1:20,prop_factor*nocbdc_oo.irfs.(...
+				strcat(char(variable_names_2nd{k}),...
+				char(shock_names{s}))),...
+				nocbdc_irf_ls,"LineWidth",irf_line_width,"Color",nocbdc_irf_color);
+			xlim([1 20]);
+			hold on;
+		end
+		% Price rule IRFs
+		plot(1:20,prop_factor*cbdc_price_rule_oo.irfs.(strcat(...
+			char(variable_names_2nd{k}),char(shock_names{s}))),...
+			cbdc_irf_pr_ls,"LineWidth",irf_line_width,"Color",...
+			cbdc_irf_pr_color);
+		xlim([1 20]);
+		hold on;
+		% Quant. rule IRFs
+		plot(1:20,prop_factor*cbdc_quant_rule_oo.irfs.(strcat(...
+			char(variable_names_2nd{k}),char(shock_names{s}))),...
+			cbdc_irf_qr_ls,"LineWidth",irf_line_width,"Color",...
+			cbdc_irf_qr_color);
+		xlim([1 20]);
+		% Figure titles
+		title(variable_names_2nd_titles(k)," ","Interpreter","latex",...
+			"fontsize",title_font_size);%,'Position');, [0],...
+			% "Units","normalized");
+		xlabel(x_label,"FontSize",x_label_font_size);
+		ylabel(y_label,"FontSize",y_label_font_size);
+		grid on;box on;hold off;
+	end
+	legen{1,1}="";legen{1,2}="No CBDC";legen{1,3}="CBDC - Price rule";
+	legen{1,4}="CBDC - Quant. rule";
+	lege=legend(legen,'Orientation','horizontal',...
+		'Position',[0.5 0.05 0 0],'FontSize',10);
+	set(lege,'Box','on');
+	set(gcf,"PaperPosition",[0 0 10.5 7.75]);
+	% saveas(gcf,strcat("irfs",shock_names{s},"_remain",".eps"),"epsc")
+end
+% close all;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%% IRFs to e_a_t with high T
@@ -182,35 +182,35 @@ set_param_value("i_spread",0.0015)
 [info, cbdc_price_rule_oo_low_i_sp, options_] = ...
 stoch_simul(M_, options_, oo_, var_list_);
 set_param_value("i_spread",0.015)
-% figure;
-% for k=1:length(variable_names)
-% 	subplot(4,3,k);
-% 	yline(0,":k","LineWidth",zero_line_width);
-% 	hold on;
-% 	plot(1:20,prop_factor*nocbdc_oo.irfs.(...
-% 		strcat(char(variable_names{k}),...
-% 		char("_e_a_t"))),...
-% 		nocbdc_irf_ls,"LineWidth",irf_line_width,"Color",nocbdc_irf_color);
-% 	xlim([1 20]);
-% 	hold on;
-% 	plot(1:20,prop_factor*cbdc_price_rule_oo_high_T.irfs.(strcat(...
-% 		char(variable_names{k}),char("_e_a_t"))),...
-% 		cbdc_irf_pr_ls,"LineWidth",irf_line_width,"Color",...
-% 		cbdc_irf_pr_color);
-% 	xlim([1 20]);
-% 	title(variable_names_titles(k)," ","Interpreter","latex",...
-% 		"fontsize",title_font_size);%,'Position');, [0],...
-% 		% "Units","normalized");
-% 	xlabel(x_label,"FontSize",x_label_font_size);
-% 	ylabel(y_label,"FontSize",y_label_font_size);
-% 	grid on;
-% 	hold off;
-% end
-% legen{1,1}="";legen{1,2}="No CBDC";legen{1,3}="CBDC - Price rule";
-% lege=legend(legen,'Orientation','horizontal',...
-% 	'Position',[0.5 0.05 0 0],'FontSize',10);
-% set(lege,'Box','on');
-% set(gcf,"PaperPosition",[0 0 8 8]);
+figure;
+for k=1:length(variable_names_main)
+	subplot(4,3,k);
+	yline(0,":k","LineWidth",zero_line_width);
+	hold on;
+	plot(1:20,prop_factor*nocbdc_oo.irfs.(...
+		strcat(char(variable_names_main{k}),...
+		char("_e_a_t"))),...
+		nocbdc_irf_ls,"LineWidth",irf_line_width,"Color",nocbdc_irf_color);
+	xlim([1 20]);
+	hold on;
+	plot(1:20,prop_factor*cbdc_price_rule_oo_high_T.irfs.(strcat(...
+		char(variable_names_main{k}),char("_e_a_t"))),...
+		cbdc_irf_pr_ls,"LineWidth",irf_line_width,"Color",...
+		cbdc_irf_pr_color);
+	xlim([1 20]);
+	title(variable_names_main_titles(k)," ","Interpreter","latex",...
+		"fontsize",title_font_size);%,'Position');, [0],...
+		% "Units","normalized");
+	xlabel(x_label,"FontSize",x_label_font_size);
+	ylabel(y_label,"FontSize",y_label_font_size);
+	grid on;
+	hold off;
+end
+legen{1,1}="";legen{1,2}="No CBDC";legen{1,3}="CBDC - Price rule";
+lege=legend(legen,'Orientation','horizontal',...
+	'Position',[0.5 0.05 0 0],'FontSize',10);
+set(lege,'Box','on');
+set(gcf,"PaperPosition",[0 0 8 8]);
 % saveas(gcf,strcat("irfs","_e_a_t","_high_T",".eps"),"epsc")
 
 % Create table with relative cumulative effects of shock to a_t
@@ -333,7 +333,7 @@ for s=1:length(shock_names_sens)
 	set(gcf,"PaperPosition",[0 0 15 13]);
 	% saveas(gcf,strcat("irfs_sens",shock_names_sens{s},".eps"),"epsc");
 end
-close all;
+% close all;
 
 % Create table with relative cumulative effects of shock to g_t
 % No CBDC
